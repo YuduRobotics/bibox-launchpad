@@ -175,8 +175,8 @@ chipsets = ["ESP32-H2"]
 image.esp32-h2 = "autoki_test/autoki.bin"
 
 [AUTOKI]
-chipsets = ["ESP32"]
-image.esp32-h2 = "autoki/autoki.bin"
+chipsets = ["ESP32-H2"]
+image.esp32-h2 = "AUTOKI/AK1.0.1.0/AUTOKI-AK1.0.0.0-dev.20251110-162250.bin"
 image.esp32 = "AUTOKI/AK1.0.1.0/AUTOKI-AK1.0.0.0-dev.20251110-162250.bin"
 
 [SNAPPY-DONGLE]
