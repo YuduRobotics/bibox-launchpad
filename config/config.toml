@@ -172,7 +172,7 @@ image.ch592 = "poki/poki.bin"
 
 [AUTOKI_TEST]
 chipsets = ["ESP32-H2"]
-image.esp32-h2 = "autoki_test/autoki.bin"
+image.esp32-h2 = "AUTOKI_test/AK1.0.1.0/AUTOKI-AK1.0.0.0-dev.20251110-162250.bin"
 
 [SNAPPY-DONGLE]
 chipsets = ["ESP32-S3"]
