@@ -198,4 +198,4 @@ image.esp32-s3 = "eyantra/eyantra.bin"
 chipsets = ["ESP32"]
 
 [AUTOKI_DEMO.image]
-esp32 = "AUTOKI_demo/AK1.0.1.0/AUTOKI-AK1.0.0.0-dev.20251113-124734.bin"
+esp32 = "AUTOKI_demo/AK1.0.1.0/AUTOKI-AK1.0.0.0-dev.20251113-130616.bin"
