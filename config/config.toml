@@ -167,8 +167,8 @@ chipsets = ["CH592"]
 image.ch592 = "poki_test/poki.bin"
 
 [POKI]
-chipsets = ["CH572"]
-image.ch592 = "poki/poki.bin"
+chipsets = ["CH592"]
+image.ch592 = "POKI/PK1.0.1.0-dev.20251219-181444/firmware_info.json"
 image.ch572 = "POKI/PK1.0.1.0-dev.20251219-180330/firmware_info.json"
 
 [SNAPPY-DONGLE]
