@@ -15,8 +15,9 @@ image.esp32-s3 = "playcomputer/playcomputer.bin"
 config_readme_url = "<APP_CONFIG_README_FILE_URL>"
 
 [ROBOKI]
-chipsets = ["ESP32-H2"]
+chipsets = [""]
 image.esp32-h2 = "roboki/roboki.bin"
+image."" = "Roboki/RB1.0.4.0-dev.20251223-131600/Roboki-Standard-RB1.0.4.0-dev.20251223-131600.bin"
 
 
 [ZING0]
