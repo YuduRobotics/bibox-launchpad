@@ -260,7 +260,7 @@ esp32s3 = "Firepen2D/2D1.0.1.0-dev.20251223-135704/Firepen2D-Standard-2D1.0.1.0-
 chipsets = ["CH572"]
 
 [PIANO.image]
-ch572 = "PIANO/PI1.0.1.0-dev.20251223-131744/firmware_info.json"
+ch572 = "PIANO/PI1.0.1.0-dev.20251223-182631/PIANO-Standard-PI1.0.1.0-dev.20251223-182631.hex"
 
 [AI_0_ACC]
 chipsets = ["ESP32S3"]
