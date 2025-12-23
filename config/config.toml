@@ -227,7 +227,7 @@ chipsets = [""]
 chipsets = ["CH572"]
 
 [JOYSTICK.image]
-ch572 = "JOYSTICK/JY1.0.1.0-dev.20251223-131224/firmware_info.json"
+ch572 = "JOYSTICK/JY1.0.1.0-dev.20251223-133442/firmware_info.json"
 
 [ZING3_0]
 chipsets = [""]
