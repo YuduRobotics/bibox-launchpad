@@ -239,10 +239,11 @@ chipsets = ["ESP32S3"]
 esp32s3 = "Zing3.0/ZG3.0.1.0-dev.20251223-133941/Zing3.0-Standard-ZG3.0.1.0-dev.20251223-133941.bin"
 
 [ZING2_0]
-chipsets = [""]
+chipsets = ["ESP32S3"]
 
 [ZING2_0.image]
 "" = "ZING2.0/ZG2.1.6.0-dev.20251223-131529/ZING2.0-NORMAL_ULTRASONIC-ZG2.1.6.0-dev.20251223-131529.bin"
+esp32s3 = "ZING2.0/ZG2.1.6.0-dev.20251223-134431/ZING2.0-NORMAL_ULTRASONIC-ZG2.1.6.0-dev.20251223-134431.bin"
 
 [FIREPEN2D]
 chipsets = [""]
