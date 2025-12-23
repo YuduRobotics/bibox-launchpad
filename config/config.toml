@@ -231,10 +231,11 @@ chipsets = ["CH572"]
 ch572 = "JOYSTICK/JY1.0.1.0-dev.20251223-133442/firmware_info.json"
 
 [ZING3_0]
-chipsets = [""]
+chipsets = ["ESP32S3"]
 
 [ZING3_0.image]
 "" = "Zing3.0/ZG3.0.1.0-dev.20251223-131357/Zing3.0-Standard-ZG3.0.1.0-dev.20251223-131357.bin"
+esp32s3 = "Zing3.0/ZG3.0.1.0-dev.20251223-133941/Zing3.0-Standard-ZG3.0.1.0-dev.20251223-133941.bin"
 
 [ZING2_0]
 chipsets = [""]
