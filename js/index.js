@@ -595,7 +595,7 @@ resetButton.onclick = async () => {
       }
       if (device) {
         try{
-          await device.close();
+          await transport.disconnect();
         }
         catch(e){
           console.log("error:",e);
