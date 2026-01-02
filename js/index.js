@@ -594,7 +594,12 @@ resetButton.onclick = async () => {
         reader.releaseLock();
       }
       if (device) {
-        await device.close();
+        try{
+          await device.close();
+        }
+        catch(e){
+          console.log("error:",e);
+        }
       }
     }
     if (isFlashByQuickTryMode || isFlashByDIYMode) {
