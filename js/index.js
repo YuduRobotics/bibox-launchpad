@@ -589,51 +589,31 @@ resetButton.onclick = async () => {
       console.log("ERROR", e);
     }
   } else {
-    if (transport) {
-      if (reader !== undefined) {
-        reader.releaseLock();
-      }
-      if (device) {
-        try{
-          await transport.disconnect();
-        }
-        catch(e){
-          console.log("error:",e);
-        }
-      }
+     if (transport) {
+        await transport.disconnect();
     }
-    if (isFlashByQuickTryMode || isFlashByDIYMode) {
-      // Handle the case of resetting the device after flashing through one of the two modes.
-      consoleBaudrate =
-        isFlashByQuickTryMode && consoleBaudrateFromToml
-          ? consoleBaudrateFromToml
-          : parseInt(consoleBaudrateSelect.value);
+    if (isFlashByQuickTryMode || isFlashByDIYMode) { // Handle the case of resetting the device after flashing through one of the two modes.
+        consoleBaudrate = isFlashByQuickTryMode && consoleBaudrateFromToml ? consoleBaudrateFromToml : parseInt(consoleBaudrateSelect.value);
     } else {
-      consoleBaudrate = parseInt(consoleBaudrateSelect.value); // Handle the case of resetting the device without flashing through any mode.
+        consoleBaudrate = parseInt(consoleBaudrateSelect.value); // Handle the case of resetting the device without flashing through any mode.
     }
     await transport.connect(consoleBaudrate);
     await transport.setDTR(false);
-    await new Promise((resolve) => setTimeout(resolve, 100));
+    await new Promise(resolve => setTimeout(resolve, 100));
     await transport.setDTR(true);
-    while (device.readable) {
-      if (!device.readable.locked) {
-        reader = device.readable.getReader();
-      }
-
-      try {
-        while (true) {
-          const { value, done } = await reader.read();
-          if (done) {
-            // Allow the serial port to be closed later.
-            reader.releaseLock();
-            break;
-          }
-          if (value) {
-            term.write(value);
-          }
+    while (true && connected) {
+        try {
+            const readLoop = transport.rawRead();
+            const { value, done } = await readLoop.next();
+            
+            if (done || !value) {
+                break;
+            }
+            term.write(value);   
+        } catch (error) {
+            term.writeln(`Error: ${e.message}`);
         }
-      } catch (error) {}
-    }
+      }
   }
 };
 
