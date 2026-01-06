@@ -125,7 +125,7 @@ image.esp32-s3 = "2d-plotter/2d-plotter.bin"
 
 [TOKI]
 chipsets = ["CH592"]
-image.ch592 = "TOKI/TK1.0.1.0TK1.0.1.0-dev.20251223-135326/firmware_info.json"
+image.ch592 = "TOKI/TK1.0.1.0TK1.0.1.0-dev.20260106-180456/TOKI-Standard-TK1.0.1.0TK1.0.1.0-dev.20260106-180456.hex"
 image.ch572 = "TOKI/TK1.0.1.0TK1.0.1.0-dev.20251223-133819/firmware_info.json"
 
 [ATR_H2_TEST]
