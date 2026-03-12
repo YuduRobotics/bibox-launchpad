@@ -65,6 +65,8 @@ export class CH_loader extends UsbTransport {
   code_flash_protected: boolean | null = null;
   btver: Uint8Array = new Uint8Array(4);
   flash_size: number | null = null;
+  eeprom_size: number = 0;
+  chipData: ChipData | null = null;
 
   protocol = new Protocol();
   espLoaderTerminal: EspTerminal;
@@ -140,6 +142,7 @@ export class CH_loader extends UsbTransport {
     chipData.variants.forEach((variant) => {
       if (variant.chip_id == this.chip_id) {
         this.flash_size = variant.flash_size;
+        this.eeprom_size = variant.eeprom_size ?? 0;
         // CH_loader.debugLog("Chip : " + variant.name);
         /* The `variant` in the `findDevice` method is iterating over the variants
           of the chip data to find a match with the current chip ID. It is used to
@@ -154,8 +157,19 @@ export class CH_loader extends UsbTransport {
         this.espLoaderTerminal.writeLine(
           "Flash Size : " + variant.flash_size / 1024 + " KiB",
         );
+        if (this.eeprom_size > 0) {
+          // CH_loader.debugLog(
+          //   "Data EEPROM : " + this.eeprom_size / 1024 + " KiB",
+          // );
+          this.espLoaderTerminal.writeLine(
+            "Data EEPROM : " + this.eeprom_size / 1024 + " KiB",
+          );
+        }
       }
     });
+
+    this.chipData = chipData;
+
     //Read Config
     const command2: Command = {
       type: "ReadConfig",
@@ -265,6 +279,86 @@ export class CH_loader extends UsbTransport {
     else
       this.espLoaderTerminal.writeLine(`Erased ${sectors} code flash sectors`);
   }
+
+  async resetConfig() {
+    if (!this.chipData)
+      throw new Error("Chip data not loaded, call findDevice first");
+    // Read current config
+    const readCmd: Command = {
+      type: "ReadConfig",
+      bitMask: CH_loader.CFG_MASK_RDPR_USER_DATA_WPR,
+    };
+    const readData = await this.protocol.ntoRaw(readCmd);
+    await this.sendRaw(readData);
+    const readRes = await this.recv();
+    if (readRes.type == "Err") throw new Error("Failed to read config");
+    // Config data is 12 bytes (3 x u32) at payload offset 2
+    const configRaw = new Uint8Array(readRes.data.slice(2, 14));
+    const configView = new DataView(configRaw.buffer);
+    // CH_loader.debugLog(
+    //   "Current config: " +
+    //     Array.from(configRaw)
+    //       .map((x) => x.toString(16).padStart(2, "0"))
+    //       .join(""),
+    // );
+    this.espLoaderTerminal.writeLine(
+      "Current config: " +
+        Array.from(configRaw)
+          .map((x) => x.toString(16).padStart(2, "0"))
+          .join(""),
+    );
+    // Write each register's reset value
+    if (this.chipData.config_registers) {
+      for (const reg of this.chipData.config_registers) {
+        const offset = Number(reg.reset ? reg.offset : null);
+        if (reg.reset && !isNaN(offset) && offset + 4 <= configRaw.length) {
+          const resetVal = Number(reg.reset);
+          configView.setUint32(offset, resetVal, true);
+        }
+      }
+    }
+    // CH_loader.debugLog(
+    //   "Reset config:   " +
+    //     Array.from(configRaw)
+    //       .map((x) => x.toString(16).padStart(2, "0"))
+    //       .join(""),
+    // );
+    this.espLoaderTerminal.writeLine(
+      "Reset config:   " +
+        Array.from(configRaw)
+          .map((x) => x.toString(16).padStart(2, "0"))
+          .join(""),
+    );
+    // Write config back
+    const writeCmd: Command = {
+      type: "WriteConfig",
+      bitMask: CH_loader.CFG_MASK_RDPR_USER_DATA_WPR,
+      data: configRaw,
+    };
+    const writeData = await this.protocol.ntoRaw(writeCmd);
+    await this.sendRaw(writeData);
+    const writeRes = await this.recv();
+    if (writeRes.type == "Err") throw new Error("Failed to write config");
+    // CH_loader.debugLog("Config registers reset successfully");
+    this.espLoaderTerminal.writeLine("Config registers reset successfully");
+  }
+
+  async eraseDataFlash() {
+    if (this.eeprom_size === 0) {
+      // CH_loader.debugLog("Chip does not support data EEPROM");
+      this.espLoaderTerminal.writeLine("Chip does not support data EEPROM");
+      return;
+    }
+    const sectors = Math.max(Math.ceil(this.eeprom_size / 1024), 1);
+    const command: Command = { type: "DataErase", sectors: sectors };
+    const sendData = await this.protocol.ntoRaw(command);
+    await this.sendRaw(sendData);
+    const res = await this.recv();
+    if (res.type == "Err") throw new Error("Error erasing data flash");
+    // CH_loader.debugLog(`Erased ${sectors} data flash sectors`);
+    this.espLoaderTerminal.writeLine(`Erased ${sectors} data flash sectors`);
+  }
+
   async eraseFlash(flash_size: number | null = this.flash_size) {
     if (!this.flash_size) {
       await this.findDevice();
@@ -441,7 +535,10 @@ export class CH_loader extends UsbTransport {
 
     return new Uint8Array(data);
   }
-  async flashFirmware(firmware: string) {
+  async flashFirmware(
+    firmware: string,
+    options: { clearDataFlash?: boolean; clearCodeFlash?: boolean } = {},
+  ) {
     try {
       // const raw = this.intelHexToUint8Array(firmware);
       const raw = await this.readIHex(firmware);
@@ -455,14 +552,25 @@ export class CH_loader extends UsbTransport {
           `Firmware size (${raw.length} bytes) exceeds flash size (${this.flash_size} bytes)`,
         );
       }
+      // Reset config registers (clears CFG_DEBUG_EN — required for fresh chips)
+      await this.resetConfig();
+
+      // Erase data flash if requested
+      if (options.clearDataFlash) {
+        await this.eraseDataFlash();
+      }
+
       this.espLoaderTerminal.writeLine("Erase Starting ...");
-      await this.eraseCode(sectors);
+      if (options.clearCodeFlash) {
+        await this.eraseFlash();
+      } else {
+        await this.eraseCode(sectors);
+      }
       this.espLoaderTerminal.writeLine("Erase completed ...");
       // CH_loader.debugLog("flashing firmware ...");
       this.espLoaderTerminal.writeLine("flashing firmware ...");
       const key = this.xorKey();
       const keyChecksum = key.reduce((acc, x) => (acc + x) & 0xff, 0);
-      console.log("key ", key, keyChecksum);
       const command1: Command = {
         type: "IspKey",
         key: new Uint8Array(0x1e),

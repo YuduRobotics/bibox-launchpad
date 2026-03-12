@@ -56,9 +56,11 @@ const rightOffCanvasContainer = document.getElementById("offcanvasRight");
 const windowHelp_Connect = document.getElementById("windowHelp_Connect");
 const offset1_flashAddress_input = document.getElementById("offset1");
 const addFile_button = document.getElementById("addFile");
+const clearFlashDiv = document.getElementById("clearFlashDiv");
 
 //when load the js file initial windowHelp_Connect it is not display offset1
 windowHelp_Connect.style.display = "none";
+clearFlashDiv.style.display = "none"
 
 let resizeTimeout = false;
 
@@ -277,17 +279,35 @@ const selectedChipset = () => {
   }
 };
 
+//find the clear flash state and return back Clear Code Flash and Clear Data Flash
+const getClearFlashOptions = () => {
+  try {
+    // Get checkbox states
+    const clearCodeFlash = $("#clearCodeFlash").prop("checked");
+    const clearDataFlash = $("#clearDataFlash").prop("checked");
+
+    return {
+      clearCodeFlash,
+      clearDataFlash
+    };
+  } catch (e) {
+    console.log("ERROR", e);
+  }
+};
+
 //config[deviceTypeSelect.value].chipType == "WCH"
 async function setWCH_board_UI_Property(deviceConfig) {
   await new Promise((reslove) => setTimeout(reslove, 100));
   let chipSet = selectedChipset();
   if (utilities.usbPortOpenChipSets.includes(chipSet)) {
     windowHelp_Connect.style.display = "block";
+    clearFlashDiv.style.display = "block"
     offset1_flashAddress_input.disabled = true;
     offset1_flashAddress_input.value = "0";
     addFile_button.disabled = true;
   } else {
     windowHelp_Connect.style.display = "none";
+    clearFlashDiv.style.display = "none"
     offset1_flashAddress_input.disabled = false;
     offset1_flashAddress_input.value = "0x1000";
     addFile_button.disabled = false;
@@ -801,6 +821,10 @@ function validate_program_inputs() {
   return "success";
 }
 
+function getClearFlashState() {
+
+}
+
 programButton.onclick = async () => {
   programButton.disabled = true;
   postFlashClick();
@@ -837,7 +861,14 @@ programButton.onclick = async () => {
   let chipSet = selectedChipset();
   try {
     if (utilities.usbPortOpenChipSets.includes(chipSet)) {
-      await loader.flashFirmware(fileArr[0].data);
+      const {
+        clearCodeFlash,
+        clearDataFlash
+      } = getClearFlashOptions()
+      await loader.flashFirmware(fileArr[0].data, {
+        clearCodeFlash,
+        clearDataFlash,
+      });
     } else {
       const flashOptions = {
         fileArray: fileArr,
@@ -867,7 +898,14 @@ async function downloadAndFlash(fileURL) {
     if (data !== undefined) {
       $("#v-pills-console-tab").click();
       if (utilities.usbPortOpenChipSets.includes(chipSet)) {
-        await loader.flashFirmware(data);
+        const {
+          clearCodeFlash,
+          clearDataFlash
+        } = getClearFlashOptions()
+        await loader.flashFirmware(data, {
+          clearCodeFlash,
+          clearDataFlash,
+        });
       } else {
         const flashOptions = {
           fileArray: [{ data: data, address: 0x0000 }],

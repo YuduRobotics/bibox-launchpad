@@ -33,13 +33,8 @@ export class UsbTransport {
             { vendorId: 0x1a86, productId: 0x55e0 },
         ];
         const devices = await navigator.usb.getDevices();
-        const matchingDevices = devices.filter((device) =>
-            filters.some(
-                (filter) =>
-                    device.vendorId === filter.vendorId &&
-                    device.productId === filter.productId
-            )
-        );
+        const matchingDevices = devices.filter((device) => filters.some((filter) => device.vendorId === filter.vendorId &&
+            device.productId === filter.productId));
         console.debug(`Found ${matchingDevices.length} WCH ISP USB devices`);
         return matchingDevices.length;
     }
