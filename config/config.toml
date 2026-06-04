@@ -235,7 +235,7 @@ chipsets = ["CH592"]
 
 [JOYSTICK.image]
 ch572 = "JOYSTICK/JY1.0.1.0-dev.20251223-133442/firmware_info.json"
-ch592 = "JOYSTICK/JY1.0.1.0-dev.20260415-183255/JOYSTICK-Standard-JY1.0.1.0-dev.20260415-183255.hex"
+ch592 = "joystick/JY1.0.1.0-dev.20260604-155105/JOYSTICK-Standard-JY1.0.1.0-dev.20260604-155105.hex"
 
 [ZING3_0]
 chipsets = ["ESP32S3"]
