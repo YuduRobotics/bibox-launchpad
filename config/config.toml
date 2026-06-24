@@ -242,7 +242,7 @@ chipsets = ["ESP32S3"]
 
 [ZING3_0.image]
 "" = "Zing3.0/ZG3.0.1.0-dev.20251223-131357/Zing3.0-Standard-ZG3.0.1.0-dev.20251223-131357.bin"
-esp32s3 = "zing3.0/ZG3.0.1.0-dev.20260623-183124/Zing3.0-Standard-ZG3.0.1.0-dev.20260623-183124.bin"
+esp32s3 = "zing3.0/ZG3.0.1.0-dev.20260624-142744/Zing3.0-Standard-ZG3.0.1.0-dev.20260624-142744.bin"
 
 [ZING2_0]
 chipsets = ["ESP32S3"]
