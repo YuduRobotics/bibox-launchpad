@@ -228,7 +228,7 @@ chipsets = ["ESP32S3"]
 
 [ZING_AI_HEAD.image]
 "" = "ZING_AI_HEAD/ZAI1.0.1.0-dev.20251223-131203/ZING_AI_HEAD-Standard-ZAI1.0.1.0-dev.20251223-131203.bin"
-esp32s3 = "zing_ai_head/ZAI1.0.1.0-dev.20260617-162508/ZING_AI_HEAD-Standard-ZAI1.0.1.0-dev.20260617-162508.bin"
+esp32s3 = "zing_ai_head/ZAI1.0.1.0-dev.20260624-205419/ZING_AI_HEAD-Standard-ZAI1.0.1.0-dev.20260624-205419.bin"
 
 [JOYSTICK]
 chipsets = ["CH592"]
