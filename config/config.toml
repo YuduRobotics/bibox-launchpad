@@ -256,7 +256,7 @@ chipsets = ["ESP32S3"]
 
 [FIREPEN2D.image]
 "" = "Firepen2D/2D1.0.1.0-dev.20251223-131635/Firepen2D-Standard-2D1.0.1.0-dev.20251223-131635.bin"
-esp32s3 = "firepen2d/2D1.0.1.0-dev.20260624-184928/Firepen2D-Standard-2D1.0.1.0-dev.20260624-184928.bin"
+esp32s3 = "firepen2d/2D1.0.1.0-dev.20260624-193843/Firepen2D-Standard-2D1.0.1.0-dev.20260624-193843.bin"
 
 [PIANO]
 chipsets = ["CH572"]
