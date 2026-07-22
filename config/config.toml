@@ -329,4 +329,4 @@ ch592 = "wch_mpy/0.2.0-dev.20260721-072839.aa12664/firmware.hex"
 chipsets = ["ESP32S3"]
 
 [PLAYCOMPUTER_GRB.image]
-esp32s3 = "playcomputer_grb/PC1.0.11.0-dev.20260721-162228/PLAYCOMPUTER_GRB-GRB-PC1.1.11.0-dev.20260721-162228.bin"
+esp32s3 = "playcomputer_grb/PC1.0.11.0-dev.20260722-154026/PLAYCOMPUTER_GRB-GRB-PC1.1.11.0-dev.20260722-154026.bin"
