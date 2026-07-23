@@ -323,7 +323,7 @@ esp32s3 = "zing2.0_12v/ZG2.1.6.0-dev.20260622-175850/ZING2.0_12V-NORMAL_ULTRASON
 chipsets = ["CH592"]
 
 [WCH_MPY.image]
-ch592 = "wch_mpy/0.2.0-dev.20260721-072839.aa12664/firmware.hex"
+ch592 = "wch_mpy/0.2.0-dev.20260723-133220.73eef2b/firmware.hex"
 
 [PLAYCOMPUTER_GRB]
 chipsets = ["ESP32S3"]
