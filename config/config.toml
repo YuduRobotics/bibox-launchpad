@@ -335,4 +335,4 @@ esp32s3 = "playcomputer_grb/PC1.0.11.0-dev.20260722-154026/PLAYCOMPUTER_GRB-GRB-
 chipsets = ["ESP32S3"]
 
 [PLAYCOMPUTER_IOT.image]
-esp32s3 = "playcomputer-iot/PC1.0.12.0-iot-dev.20261106-163419/PLAYCOMPUTER-IOT-GRB_LED-PC1.1.12.0-iot-dev.20261106-163419.bin"
+esp32s3 = "playcomputer-iot/PC1.0.12.1-iot-dev.20261116-152829/PLAYCOMPUTER-IOT-GRB_LED-PC1.1.12.1-iot-dev.20261116-152829.bin"
